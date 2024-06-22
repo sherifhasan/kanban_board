@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanban_board/application/features/tasks/tasks_cubit.dart';
+import 'package:kanban_board/service_locator.dart';
 
 void main() {
+  setup();
   runApp(const MyApp());
 }
 
@@ -10,12 +14,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Kanban Board',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
       ),
-      home: Container(),
+      home: BlocProvider(
+        create: (_) => sl<TasksCubit>()..loadTasks(''),
+        child: Container(),
+      ),
     );
   }
 }
