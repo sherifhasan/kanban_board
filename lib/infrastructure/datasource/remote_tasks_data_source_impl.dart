@@ -1,8 +1,8 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:kanban_board/infrastructure/datasource/tasks_datasource.dart';
 import 'package:kanban_board/infrastructure/models/task_dto.dart';
+import 'package:kanban_board/infrastructure/models/comment_dto.dart';
 
 class RemoteTasksDataSourceImpl extends TasksDataSource {
   final Dio dio;
@@ -44,6 +44,27 @@ class RemoteTasksDataSourceImpl extends TasksDataSource {
       }
     } on DioException catch (e) {
       throw Exception('Failed to fetch all tasks: $e');
+    }
+  }
+
+  @override
+  Future<CommentDto> addComment(String taskId, String content) async {
+    try {
+      final response = await dio.post(
+        'https://api.todoist.com/rest/v2/comments',
+        data: jsonEncode({
+          'task_id': taskId,
+          'content': content,
+        }),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return CommentDto.fromJson(response.data);
+      } else {
+        throw Exception('Failed to add comment: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw Exception('Failed to add comment: $e');
     }
   }
 }
