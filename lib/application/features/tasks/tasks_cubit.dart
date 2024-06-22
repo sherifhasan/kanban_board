@@ -13,7 +13,7 @@ part 'tasks_cubit.freezed.dart';
 class TasksCubit extends Cubit<TaskState> {
   final TaskRepository taskRepository;
 
-  TasksCubit(this.taskRepository) : super(const TaskState.initial());
+  TasksCubit({required this.taskRepository}) : super(const TaskState.initial());
 
   Future<void> loadTasks(String filter) async {
     try {
