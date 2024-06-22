@@ -67,4 +67,23 @@ class RemoteTasksDataSourceImpl extends TasksDataSource {
       throw Exception('Failed to add comment: $e');
     }
   }
+
+  @override
+  Future<List<CommentDto>> getAllComments(String taskId) async {
+    try {
+      final response = await dio.get(
+        'https://api.todoist.com/rest/v2/comments',
+        queryParameters: {'task_id': taskId},
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data;
+        return data.map((json) => CommentDto.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to fetch comments :${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw Exception('Failed to fetch comments: $e');
+    }
+  }
 }

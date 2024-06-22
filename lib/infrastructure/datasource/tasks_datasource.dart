@@ -7,4 +7,6 @@ abstract class TasksDataSource {
   Future<List<TaskDto>> getAllTasks(String filter);
 
   Future<CommentDto> addComment(String taskId, String content);
+
+  Future<List<CommentDto>> getAllComments(String taskId);
 }

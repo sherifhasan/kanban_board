@@ -188,5 +188,51 @@ void main() {
             throwsException);
       });
     });
+    group('getAllComments', () {
+      test('should return list of comments when the API call is successful',
+          () async {
+        final commentsJson = [
+          {
+            'content': 'Need to be started soon',
+            'task_id': '2995104339',
+          },
+        ];
+
+        // Mock the Dio get method to return the expected response.
+        when(() => dio.get(
+              any(),
+              queryParameters: any(named: 'queryParameters'),
+            )).thenAnswer((_) async => Response(
+              data: commentsJson,
+              statusCode: 200,
+              requestOptions: RequestOptions(path: ''),
+            ));
+
+        final comments =
+            await remoteTaskDataSource.getAllComments('2995104339');
+
+        expect(comments, isA<List<CommentDto>>());
+        expect(comments.length, 1);
+        expect(comments[0].taskId, '2995104339');
+        expect(comments[0].content, 'Need to be started soon');
+      });
+
+      test('should throw an exception when the API call to get comments fails',
+          () async {
+        // Mock the Dio get method to return an error response.
+        when(() => dio.get(
+              any(),
+              queryParameters: any(named: 'queryParameters'),
+            )).thenAnswer((_) async => Response(
+              data: 'Failed to fetch comments',
+              statusCode: 400,
+              requestOptions: RequestOptions(path: ''),
+            ));
+
+        expect(
+            () async => await remoteTaskDataSource.getAllComments('2995104339'),
+            throwsException);
+      });
+    });
   });
 }
