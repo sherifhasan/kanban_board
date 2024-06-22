@@ -32,7 +32,7 @@ class RemoteTasksDataSourceImpl extends TasksDataSource {
   Future<List<TaskDto>> getAllTasks(String filter) async {
     try {
       final response = await dio.get(
-        'https://api.todoist.com/rest/v2/tasks',
+        '/tasks',
         queryParameters: {'filter': filter},
       );
 
@@ -51,7 +51,7 @@ class RemoteTasksDataSourceImpl extends TasksDataSource {
   Future<CommentDto> addComment(String taskId, String content) async {
     try {
       final response = await dio.post(
-        'https://api.todoist.com/rest/v2/comments',
+        '/comments',
         data: jsonEncode({
           'task_id': taskId,
           'content': content,
@@ -72,7 +72,7 @@ class RemoteTasksDataSourceImpl extends TasksDataSource {
   Future<List<CommentDto>> getAllComments(String taskId) async {
     try {
       final response = await dio.get(
-        'https://api.todoist.com/rest/v2/comments',
+        '/comments',
         queryParameters: {'task_id': taskId},
       );
 
@@ -84,6 +84,23 @@ class RemoteTasksDataSourceImpl extends TasksDataSource {
       }
     } on DioException catch (e) {
       throw Exception('Failed to fetch comments: $e');
+    }
+  }
+
+  @override
+  Future<bool> closeTask(String taskId) async {
+    try {
+      final response = await dio.post(
+        '/tasks/$taskId/close',
+      );
+
+      if (response.statusCode == 204) {
+        return true;
+      } else {
+        throw Exception('Failed to close task: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw Exception('Failed to close task: $e');
     }
   }
 }

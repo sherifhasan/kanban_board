@@ -234,5 +234,36 @@ void main() {
             throwsException);
       });
     });
+
+    group('closeTask', () {
+      test('should return true when the API call is successful', () async {
+        // Mock the Dio post method to return the expected response.
+        when(() => dio.post(
+              any(),
+            )).thenAnswer((_) async => Response(
+              data: null,
+              statusCode: 204,
+              requestOptions: RequestOptions(path: ''),
+            ));
+
+        final result = await remoteTaskDataSource.closeTask('2995104339');
+
+        expect(result, true);
+      });
+
+      test('should throw an exception when the API call fails', () async {
+        // Mock the Dio post method to return an error response.
+        when(() => dio.post(
+              any(),
+            )).thenAnswer((_) async => Response(
+              data: 'Failed to close task',
+              statusCode: 400,
+              requestOptions: RequestOptions(path: ''),
+            ));
+
+        expect(() async => await remoteTaskDataSource.closeTask('2995104339'),
+            throwsException);
+      });
+    });
   });
 }
