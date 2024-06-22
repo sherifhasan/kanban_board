@@ -22,12 +22,12 @@ CommentDto _$CommentDtoFromJson(Map<String, dynamic> json) {
 mixin _$CommentDto {
   String get content => throw _privateConstructorUsedError;
   String? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'task_id')
+  String get taskId => throw _privateConstructorUsedError;
   @JsonKey(name: 'posted_at')
   String? get postedAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'project_id')
   String? get projectId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'task_id')
-  String get taskId => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: false)
   AttachmentDto? get attachment => throw _privateConstructorUsedError;
 
@@ -46,9 +46,9 @@ abstract class $CommentDtoCopyWith<$Res> {
   $Res call(
       {String content,
       String? id,
+      @JsonKey(name: 'task_id') String taskId,
       @JsonKey(name: 'posted_at') String? postedAt,
       @JsonKey(name: 'project_id') String? projectId,
-      @JsonKey(name: 'task_id') String taskId,
       @JsonKey(includeIfNull: false) AttachmentDto? attachment});
 
   $AttachmentDtoCopyWith<$Res>? get attachment;
@@ -69,9 +69,9 @@ class _$CommentDtoCopyWithImpl<$Res, $Val extends CommentDto>
   $Res call({
     Object? content = null,
     Object? id = freezed,
+    Object? taskId = null,
     Object? postedAt = freezed,
     Object? projectId = freezed,
-    Object? taskId = null,
     Object? attachment = freezed,
   }) {
     return _then(_value.copyWith(
@@ -83,6 +83,10 @@ class _$CommentDtoCopyWithImpl<$Res, $Val extends CommentDto>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      taskId: null == taskId
+          ? _value.taskId
+          : taskId // ignore: cast_nullable_to_non_nullable
+              as String,
       postedAt: freezed == postedAt
           ? _value.postedAt
           : postedAt // ignore: cast_nullable_to_non_nullable
@@ -91,10 +95,6 @@ class _$CommentDtoCopyWithImpl<$Res, $Val extends CommentDto>
           ? _value.projectId
           : projectId // ignore: cast_nullable_to_non_nullable
               as String?,
-      taskId: null == taskId
-          ? _value.taskId
-          : taskId // ignore: cast_nullable_to_non_nullable
-              as String,
       attachment: freezed == attachment
           ? _value.attachment
           : attachment // ignore: cast_nullable_to_non_nullable
@@ -126,9 +126,9 @@ abstract class _$$CommentDtoImplCopyWith<$Res>
   $Res call(
       {String content,
       String? id,
+      @JsonKey(name: 'task_id') String taskId,
       @JsonKey(name: 'posted_at') String? postedAt,
       @JsonKey(name: 'project_id') String? projectId,
-      @JsonKey(name: 'task_id') String taskId,
       @JsonKey(includeIfNull: false) AttachmentDto? attachment});
 
   @override
@@ -148,9 +148,9 @@ class __$$CommentDtoImplCopyWithImpl<$Res>
   $Res call({
     Object? content = null,
     Object? id = freezed,
+    Object? taskId = null,
     Object? postedAt = freezed,
     Object? projectId = freezed,
-    Object? taskId = null,
     Object? attachment = freezed,
   }) {
     return _then(_$CommentDtoImpl(
@@ -162,6 +162,10 @@ class __$$CommentDtoImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      taskId: null == taskId
+          ? _value.taskId
+          : taskId // ignore: cast_nullable_to_non_nullable
+              as String,
       postedAt: freezed == postedAt
           ? _value.postedAt
           : postedAt // ignore: cast_nullable_to_non_nullable
@@ -170,10 +174,6 @@ class __$$CommentDtoImplCopyWithImpl<$Res>
           ? _value.projectId
           : projectId // ignore: cast_nullable_to_non_nullable
               as String?,
-      taskId: null == taskId
-          ? _value.taskId
-          : taskId // ignore: cast_nullable_to_non_nullable
-              as String,
       attachment: freezed == attachment
           ? _value.attachment
           : attachment // ignore: cast_nullable_to_non_nullable
@@ -188,9 +188,9 @@ class _$CommentDtoImpl implements _CommentDto {
   const _$CommentDtoImpl(
       {required this.content,
       this.id,
+      @JsonKey(name: 'task_id') required this.taskId,
       @JsonKey(name: 'posted_at') required this.postedAt,
       @JsonKey(name: 'project_id') this.projectId,
-      @JsonKey(name: 'task_id') required this.taskId,
       @JsonKey(includeIfNull: false) this.attachment});
 
   factory _$CommentDtoImpl.fromJson(Map<String, dynamic> json) =>
@@ -201,21 +201,21 @@ class _$CommentDtoImpl implements _CommentDto {
   @override
   final String? id;
   @override
+  @JsonKey(name: 'task_id')
+  final String taskId;
+  @override
   @JsonKey(name: 'posted_at')
   final String? postedAt;
   @override
   @JsonKey(name: 'project_id')
   final String? projectId;
   @override
-  @JsonKey(name: 'task_id')
-  final String taskId;
-  @override
   @JsonKey(includeIfNull: false)
   final AttachmentDto? attachment;
 
   @override
   String toString() {
-    return 'CommentDto(content: $content, id: $id, postedAt: $postedAt, projectId: $projectId, taskId: $taskId, attachment: $attachment)';
+    return 'CommentDto(content: $content, id: $id, taskId: $taskId, postedAt: $postedAt, projectId: $projectId, attachment: $attachment)';
   }
 
   @override
@@ -225,11 +225,11 @@ class _$CommentDtoImpl implements _CommentDto {
             other is _$CommentDtoImpl &&
             (identical(other.content, content) || other.content == content) &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.taskId, taskId) || other.taskId == taskId) &&
             (identical(other.postedAt, postedAt) ||
                 other.postedAt == postedAt) &&
             (identical(other.projectId, projectId) ||
                 other.projectId == projectId) &&
-            (identical(other.taskId, taskId) || other.taskId == taskId) &&
             (identical(other.attachment, attachment) ||
                 other.attachment == attachment));
   }
@@ -237,7 +237,7 @@ class _$CommentDtoImpl implements _CommentDto {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, content, id, postedAt, projectId, taskId, attachment);
+      runtimeType, content, id, taskId, postedAt, projectId, attachment);
 
   @JsonKey(ignore: true)
   @override
@@ -257,9 +257,9 @@ abstract class _CommentDto implements CommentDto {
   const factory _CommentDto(
           {required final String content,
           final String? id,
+          @JsonKey(name: 'task_id') required final String taskId,
           @JsonKey(name: 'posted_at') required final String? postedAt,
           @JsonKey(name: 'project_id') final String? projectId,
-          @JsonKey(name: 'task_id') required final String taskId,
           @JsonKey(includeIfNull: false) final AttachmentDto? attachment}) =
       _$CommentDtoImpl;
 
@@ -271,14 +271,14 @@ abstract class _CommentDto implements CommentDto {
   @override
   String? get id;
   @override
+  @JsonKey(name: 'task_id')
+  String get taskId;
+  @override
   @JsonKey(name: 'posted_at')
   String? get postedAt;
   @override
   @JsonKey(name: 'project_id')
   String? get projectId;
-  @override
-  @JsonKey(name: 'task_id')
-  String get taskId;
   @override
   @JsonKey(includeIfNull: false)
   AttachmentDto? get attachment;

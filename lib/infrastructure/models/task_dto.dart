@@ -1,10 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:kanban_board/domain/models/task.dart';
 
 part 'task_dto.freezed.dart';
 
 part 'task_dto.g.dart';
-
-enum TaskStatus { todo, inProgress, done }
 
 @freezed
 class TaskDto with _$TaskDto {
@@ -28,10 +27,18 @@ class TaskDto with _$TaskDto {
     required String url,
   }) = _TaskDto;
 
-  //const TaskDto._();
-
   factory TaskDto.fromJson(Map<String, dynamic> json) =>
       _$TaskDtoFromJson(json);
+}
 
-//Task toEntity() => Task();
+extension TaskDtoX on TaskDto {
+  Task toDomain() {
+    return Task(
+      id: id,
+      content: content,
+      createdAt: createdAt,
+      comments: [],
+      status: isCompleted ? TaskStatus.done : TaskStatus.toDo,
+    );
+  }
 }

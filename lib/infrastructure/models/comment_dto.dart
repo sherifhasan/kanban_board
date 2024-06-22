@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:kanban_board/domain/models/task.dart';
 
 part 'comment_dto.freezed.dart';
 
@@ -30,4 +31,12 @@ class AttachmentDto with _$AttachmentDto {
 
   factory AttachmentDto.fromJson(Map<String, dynamic> json) =>
       _$AttachmentDtoFromJson(json);
+}
+
+extension CommentDtoX on CommentDto {
+  Comment toDomain() {
+    return Comment(
+      content: content,
+    );
+  }
 }

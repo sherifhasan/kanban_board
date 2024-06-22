@@ -10,9 +10,9 @@ _$CommentDtoImpl _$$CommentDtoImplFromJson(Map<String, dynamic> json) =>
     _$CommentDtoImpl(
       content: json['content'] as String,
       id: json['id'] as String?,
+      taskId: json['task_id'] as String,
       postedAt: json['posted_at'] as String?,
       projectId: json['project_id'] as String?,
-      taskId: json['task_id'] as String,
       attachment: json['attachment'] == null
           ? null
           : AttachmentDto.fromJson(json['attachment'] as Map<String, dynamic>),
@@ -22,9 +22,9 @@ Map<String, dynamic> _$$CommentDtoImplToJson(_$CommentDtoImpl instance) {
   final val = <String, dynamic>{
     'content': instance.content,
     'id': instance.id,
+    'task_id': instance.taskId,
     'posted_at': instance.postedAt,
     'project_id': instance.projectId,
-    'task_id': instance.taskId,
   };
 
   void writeNotNull(String key, dynamic value) {
