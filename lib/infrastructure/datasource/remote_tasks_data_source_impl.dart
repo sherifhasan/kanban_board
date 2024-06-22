@@ -11,16 +11,39 @@ class RemoteTasksDataSourceImpl extends TasksDataSource {
 
   @override
   Future<TaskDto> addTask(String content) async {
-    final response = await dio.post('/tasks',
-        data: jsonEncode({
-          'content': content,
-          'project_id': 2335101376,
-        }));
+    try {
+      final response = await dio.post('/tasks',
+          data: jsonEncode({
+            'content': content,
+            'project_id': 2335101376,
+          }));
 
-    if (response.statusCode != 200 && response.statusCode != 201) {
-      throw Exception('Failed to add task');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return TaskDto.fromJson(response.data);
+      } else {
+        throw Exception('Failed to add task: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw Exception('Failed to add task: $e');
     }
-    return TaskDto.fromJson(response.data);
   }
 
+  @override
+  Future<List<TaskDto>> getAllTasks(String filter) async {
+    try {
+      final response = await dio.get(
+        'https://api.todoist.com/rest/v2/tasks',
+        queryParameters: {'filter': filter},
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data;
+        return data.map((json) => TaskDto.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to fetch all tasks :${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw Exception('Failed to fetch all tasks: $e');
+    }
+  }
 }

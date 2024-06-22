@@ -28,6 +28,10 @@ class TaskDto with _$TaskDto {
     required String url,
   }) = _TaskDto;
 
+  //const TaskDto._();
+
   factory TaskDto.fromJson(Map<String, dynamic> json) =>
       _$TaskDtoFromJson(json);
+
+//Task toEntity() => Task();
 }

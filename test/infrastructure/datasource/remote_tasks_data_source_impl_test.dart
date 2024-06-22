@@ -11,8 +11,8 @@ class MockDio extends Mock implements Dio {}
 void main() {
   setUpAll(() {
     // Register the fallback values for named parameters used in Dio methods.
-    registerFallbackValue(Uri());
     registerFallbackValue(RequestOptions(path: ''));
+    registerFallbackValue(Response(requestOptions: RequestOptions(path: '')));
   });
 
   group('TaskRemoteDataSource', () {
@@ -24,56 +24,124 @@ void main() {
       remoteTaskDataSource = RemoteTasksDataSourceImpl(dio: dio);
     });
 
-    test('should return Task when the API call is successful', () async {
-      final taskJson = {
-        'id': '2995104339',
-        'content': 'setup project',
-        'description': '',
-        'comment_count': 0,
-        'is_completed': false,
-        'order': 1,
-        'priority': 1,
-        'project_id': '2203306141',
-        'labels': [],
-        'due': null,
-        'section_id': null,
-        'parent_id': null,
-        'creator_id': '2671355',
-        'created_at': '2019-12-11T22:36:50.000000Z',
-        'assignee_id': null,
-        'assigner_id': null,
-        'url': 'https://todoist.com/showTask?id=2995104339'
-      };
+    group('addTask', () {
+      test('should return Task when the API call is successful', () async {
+        final taskJson = {
+          'id': '2995104339',
+          'content': 'setup project',
+          'description': '',
+          'comment_count': 0,
+          'is_completed': false,
+          'order': 1,
+          'priority': 1,
+          'project_id': '2203306141',
+          'labels': [],
+          'due': null,
+          'section_id': null,
+          'parent_id': null,
+          'creator_id': '2671355',
+          'created_at': '2019-12-11T22:36:50.000000Z',
+          'assignee_id': null,
+          'assigner_id': null,
+          'url': 'https://todoist.com/showTask?id=2995104339'
+        };
 
-      // Mock the Dio post method to return the expected response.
-      when(() => dio.post(
-            any(),
-            data: any(named: 'data'),
-          )).thenAnswer((_) async => Response(
-            data: taskJson,
-            statusCode: 201,
-            requestOptions: RequestOptions(path: ''),
-          ));
+        // Mock the Dio post method to return the expected response.
+        when(() => dio.post(
+              any(),
+              data: any(named: 'data'),
+            )).thenAnswer((_) async => Response(
+              data: taskJson,
+              statusCode: 201,
+              requestOptions: RequestOptions(path: ''),
+            ));
 
-      final task = await remoteTaskDataSource.addTask('setup project');
+        final task = await remoteTaskDataSource.addTask('setup project');
 
-      expect(task, isA<TaskDto>());
-      expect(task.id, '2995104339');
-      expect(task.content, 'setup project');
+        expect(task, isA<TaskDto>());
+        expect(task.id, '2995104339');
+        expect(task.content, 'setup project');
+      });
+
+      test('should throw an exception when the API call fails', () {
+        // Mock the Dio post method to return an error response.
+        when(() => dio.post(
+              any(),
+              data: any(named: 'data'),
+            )).thenAnswer((_) async => Response(
+              data: 'Failed to add task',
+              statusCode: 400,
+              requestOptions: RequestOptions(path: ''),
+            ));
+
+        expect(remoteTaskDataSource.addTask('setup project'), throwsException);
+      });
     });
 
-    test('should throw an exception when the API call fails', () {
-      // Mock the Dio post method to return an error response.
-      when(() => dio.post(
-            any(),
-            data: any(named: 'data'),
-          )).thenAnswer((_) async => Response(
-            data: 'Failed to add task',
-            statusCode: 400,
-            requestOptions: RequestOptions(path: ''),
-          ));
+    group('getAllTasks', () {
+      test(
+          'should return list of completed tasks when the API call is successful',
+          () async {
+        final tasksJson = [
+          {
+            'id': '2995104339',
+            'content': 'setup project',
+            'description': '',
+            'comment_count': 0,
+            'is_completed': true,
+            'order': 1,
+            'priority': 1,
+            'project_id': '2203306141',
+            'labels': [],
+            'due': null,
+            'section_id': null,
+            'parent_id': null,
+            'creator_id': '2671355',
+            'created_at': '2019-12-11T22:36:50.000000Z',
+            'assignee_id': null,
+            'assigner_id': null,
+            'url': 'https://todoist.com/showTask?id=2995104339'
+          },
+          // Add more tasks if necessary
+        ];
 
-      expect(remoteTaskDataSource.addTask('setup project'), throwsException);
+        // Mock the Dio get method to return the expected response.
+        when(() => dio.get(
+              any(),
+              queryParameters: any(named: 'queryParameters'),
+            )).thenAnswer((_) async => Response(
+              data: tasksJson,
+              statusCode: 200,
+              requestOptions: RequestOptions(path: ''),
+            ));
+
+        final tasks =
+            await remoteTaskDataSource.getAllTasks('is_completed=true');
+
+        expect(tasks, isA<List<TaskDto>>());
+        expect(tasks.length, 1);
+        expect(tasks[0].id, '2995104339');
+        expect(tasks[0].isCompleted, true);
+      });
+
+      test(
+          'should throw an exception when the API call to get completed tasks fails',
+          () {
+        // Mock the Dio get method to return an error response.
+        when(() => dio.get(
+              any(),
+              queryParameters: any(named: 'queryParameters'),
+            )).thenAnswer((_) async => Response(
+              data: 'Failed to fetch tasks',
+              statusCode: 400,
+              requestOptions: RequestOptions(path: ''),
+            ));
+
+        expect(
+            () async =>
+                await remoteTaskDataSource.getAllTasks('is_completed=true'),
+            throwsException);
+      });
     });
   });
 }
