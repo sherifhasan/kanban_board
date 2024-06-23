@@ -3,8 +3,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:kanban_board/domain/models/task.dart';
 import 'package:kanban_board/domain/task_repository.dart';
-import 'package:kanban_board/infrastructure/models/task_dto.dart';
-import 'package:kanban_board/infrastructure/models/comment_dto.dart';
+import 'package:kanban_board/infrastructure/models/remote/task_dto.dart';
+import 'package:kanban_board/infrastructure/models/remote/comment_dto.dart';
 
 part 'task_state.dart';
 
@@ -45,8 +45,8 @@ class TasksCubit extends Cubit<TaskState> {
       final updatedTask = taskDto.toDomain();
       final currentState = state;
       if (currentState is _Loaded) {
-        final updatedTasks = currentState.tasks.map((task) {
-          return task.id == task.id ? updatedTask : task;
+        final updatedTasks = currentState.tasks.map((t) {
+          return t.id == task.id ? updatedTask : t;
         }).toList();
         emit(TaskState.loaded(updatedTasks));
       }
@@ -90,11 +90,11 @@ class TasksCubit extends Cubit<TaskState> {
       if (success) {
         final currentState = state;
         if (currentState is _Loaded) {
-          final updatedTasks = currentState.tasks.map((task) {
-            if (task.id == taskId) {
-              return task.copyWith(status: TaskStatus.done);
+          final updatedTasks = currentState.tasks.map((currentTask) {
+            if (currentTask.id == taskId) {
+              return currentTask.copyWith(status: TaskStatus.done);
             }
-            return task;
+            return currentTask;
           }).toList();
           emit(TaskState.loaded(updatedTasks));
         }
@@ -147,7 +147,7 @@ class TasksCubit extends Cubit<TaskState> {
     if (currentState is _Loaded) {
       final updatedTasks = currentState.tasks.map((task) {
         if (task.id == taskId) {
-          return task.copyWith(status: TaskStatus.inProgress);
+          return task.copyWith(isTiming: true, status: TaskStatus.inProgress);
         }
         return task;
       }).toList();
@@ -158,9 +158,13 @@ class TasksCubit extends Cubit<TaskState> {
   Future<void> stopTimer(String taskId, int timeSpent) async {
     final currentState = state;
     if (currentState is _Loaded) {
+      await taskRepository.closeTask(taskId);
       final updatedTasks = currentState.tasks.map((task) {
         if (task.id == taskId) {
-          return task.copyWith(status: TaskStatus.toDo);
+          return task.copyWith(
+              isTiming: false,
+              timeSpent: task.timeSpent + timeSpent,
+              status: TaskStatus.done);
         }
         return task;
       }).toList();
