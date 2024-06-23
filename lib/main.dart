@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kanban_board/application/features/tasks/tasks_cubit.dart';
+import 'package:kanban_board/presentation/main/main_screen.dart';
 import 'package:kanban_board/service_locator.dart';
 
 void main() {
@@ -13,14 +15,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Kanban Board',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: BlocProvider(
-        create: (_) => sl<TasksCubit>()..loadTasks(''),
-        child: Container(),
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => sl<TasksCubit>()..loadTasks(''),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Kanban Board',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const MainScreen(),
       ),
     );
   }
