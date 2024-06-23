@@ -47,7 +47,7 @@ class RemoteTasksDataSourceImpl extends TasksDataSource {
   }
 
   @override
-  Future<CommentDto> addComment(String taskId, String content) async {
+  Future<CommentDto> addComment(String content, String taskId) async {
     try {
       final response = await dio.post(
         '/comments',
@@ -104,7 +104,7 @@ class RemoteTasksDataSourceImpl extends TasksDataSource {
   }
 
   @override
-  Future<TaskDto> updateTask(String taskId, String content) async {
+  Future<TaskDto> updateTask(String content, String taskId) async {
     try {
       final response = await dio.post(
         '/tasks/$taskId',
