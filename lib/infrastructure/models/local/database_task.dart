@@ -15,7 +15,7 @@ class DatabaseTask extends HiveObject {
   final DateTime createdAt;
 
   @HiveField(3)
-  final TaskStatus status;
+  final DatabaseTaskStatus status;
 
   @HiveField(4)
   final int timeSpent;
@@ -37,7 +37,7 @@ class DatabaseTask extends HiveObject {
       id: task.id,
       content: task.content,
       createdAt: task.createdAt,
-      status: task.status,
+      status: _mapTaskStatusToDatabaseTaskStatus(task.status),
       timeSpent: task.timeSpent,
       isTiming: task.isTiming,
     );
@@ -48,9 +48,47 @@ class DatabaseTask extends HiveObject {
       id: id,
       content: content,
       createdAt: createdAt,
-      status: status,
+      status: _mapDatabaseTaskStatusToTaskStatus(status),
       timeSpent: timeSpent,
       isTiming: isTiming,
     );
   }
+
+  static DatabaseTaskStatus _mapTaskStatusToDatabaseTaskStatus(
+      TaskStatus status) {
+    switch (status) {
+      case TaskStatus.toDo:
+        return DatabaseTaskStatus.toDo;
+      case TaskStatus.inProgress:
+        return DatabaseTaskStatus.inProgress;
+      case TaskStatus.done:
+        return DatabaseTaskStatus.done;
+      default:
+        throw Exception('Unknown TaskStatus: $status');
+    }
+  }
+
+  static TaskStatus _mapDatabaseTaskStatusToTaskStatus(
+      DatabaseTaskStatus status) {
+    switch (status) {
+      case DatabaseTaskStatus.toDo:
+        return TaskStatus.toDo;
+      case DatabaseTaskStatus.inProgress:
+        return TaskStatus.inProgress;
+      case DatabaseTaskStatus.done:
+        return TaskStatus.done;
+      default:
+        throw Exception('Unknown DatabaseTaskStatus: $status');
+    }
+  }
+}
+
+@HiveType(typeId: 1)
+enum DatabaseTaskStatus {
+  @HiveField(0)
+  toDo,
+  @HiveField(1)
+  inProgress,
+  @HiveField(2)
+  done,
 }

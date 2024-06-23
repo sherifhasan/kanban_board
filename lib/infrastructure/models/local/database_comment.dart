@@ -3,7 +3,7 @@ import 'package:kanban_board/domain/models/task.dart';
 
 part 'database_comment.g.dart';
 
-@HiveType(typeId: 1)
+@HiveType(typeId: 2)
 class DatabaseComment extends HiveObject {
   @HiveField(0)
   final String content;

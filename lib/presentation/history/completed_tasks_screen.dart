@@ -23,7 +23,7 @@ class CompletedTasksScreen extends StatelessWidget {
                 return ListTile(
                   title: Text(task.content),
                   subtitle: Text(
-                      'Completed at: ${task.timeSpent.toStringAsFixed(2)} min'),
+                      'Completed at: ${(task.timeSpent / 60).toStringAsFixed(2)} min'),
                 );
               },
             ),

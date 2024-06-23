@@ -12,7 +12,7 @@ import 'package:kanban_board/infrastructure/task_repository_impl.dart';
 import 'infrastructure/models/local/local.dart';
 
 final injection = GetIt.instance;
-const apiToken = 'add your token';
+const apiToken = 'add your token here';
 
 Future<void> setup() async {
   await setupDatabase();
@@ -24,6 +24,7 @@ Future<void> setupDatabase() async {
   await Hive.initFlutter(appDocumentDir.path);
 
   Hive.registerAdapter(DatabaseTaskAdapter());
+  Hive.registerAdapter(DatabaseTaskStatusAdapter());
   Hive.registerAdapter(DatabaseCommentAdapter());
   await Hive.openBox<DatabaseTask>('completedTasks');
 }

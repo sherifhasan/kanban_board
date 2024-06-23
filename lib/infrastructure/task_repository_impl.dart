@@ -33,12 +33,13 @@ class TaskRepositoryImpl extends TaskRepository {
   }
 
   @override
-  Future<bool> closeTask(String taskId) async {
+  Future<bool> closeTask(String taskId, int timeSpent) async {
     bool success = await remoteTasksDataSource.closeTask(taskId);
     if (success) {
       final taskDto = await remoteTasksDataSource.getTask(taskId);
       final task = taskDto.toDomain();
-      await completedTasksBox.put(task.id, DatabaseTask.fromTask(task));
+      await completedTasksBox.put(
+          task.id, DatabaseTask.fromTask(task.copyWith(timeSpent: timeSpent)));
     }
     return success;
   }

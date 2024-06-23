@@ -15,26 +15,13 @@ class TaskDetailsWidget extends StatefulWidget {
 class TaskDetailsWidgetState extends State<TaskDetailsWidget> {
   final TextEditingController _commentController = TextEditingController();
   late TextEditingController _taskController;
-  late Stopwatch _stopwatch;
 
   @override
   void initState() {
     super.initState();
     _taskController = TextEditingController(text: widget.task.content);
-    _stopwatch = Stopwatch();
-    context.read<TasksCubit>().loadComments(widget.task.id);
-    if (widget.task.isTiming) {
-      _stopwatch.start();
-    }
-  }
 
-  Stream<int> _stopwatchStream() async* {
-    int initialTime = widget.task.timeSpent;
-    yield initialTime;
-    while (_stopwatch.isRunning) {
-      await Future.delayed(const Duration(seconds: 1));
-      yield initialTime + _stopwatch.elapsed.inSeconds;
-    }
+    context.read<TasksCubit>().loadComments(widget.task.id);
   }
 
   @override
@@ -103,45 +90,6 @@ class TaskDetailsWidgetState extends State<TaskDetailsWidget> {
                       }
                     },
                   ),
-                ],
-              ),
-              const Divider(),
-              Row(
-                children: [
-                  if (!updatedTask.isTiming)
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          _stopwatch.start();
-                        });
-                        context.read<TasksCubit>().startTimer(updatedTask.id);
-                      },
-                      child: const Text('Start Timer'),
-                    )
-                  else
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          _stopwatch.stop();
-                        });
-                        context.read<TasksCubit>().stopTimer(
-                            updatedTask.id, _stopwatch.elapsed.inSeconds);
-                        _stopwatch.reset();
-                      },
-                      child: const Text('Stop Timer'),
-                    ),
-                  if (updatedTask.isTiming)
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16.0),
-                      child: StreamBuilder<int>(
-                        stream: _stopwatchStream(),
-                        builder: (context, snapshot) {
-                          return Text(
-                              'Time: ${snapshot.data ?? updatedTask.timeSpent}s',
-                              style: const TextStyle(fontSize: 14));
-                        },
-                      ),
-                    ),
                 ],
               ),
             ],

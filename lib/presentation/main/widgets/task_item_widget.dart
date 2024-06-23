@@ -81,7 +81,7 @@ class TaskItemWidgetState extends State<TaskItemWidget> {
                 stream: _stopwatchStream(),
                 builder: (context, snapshot) {
                   return Text(
-                      'Time: ${((snapshot.data ?? widget.task.timeSpent) / 60).toStringAsFixed(2)} min',
+                      '${((snapshot.data ?? widget.task.timeSpent) / 60).toStringAsFixed(2)} min',
                       style: const TextStyle(fontSize: 14));
                 },
               ),
