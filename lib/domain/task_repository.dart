@@ -2,8 +2,6 @@ import 'package:kanban_board/infrastructure/models/local/database_task.dart';
 import 'package:kanban_board/infrastructure/models/remote/comment_dto.dart';
 import 'package:kanban_board/infrastructure/models/remote/task_dto.dart';
 
-import 'models/task.dart';
-
 abstract class TaskRepository {
   Future<TaskDto> addTask(String content);
 
