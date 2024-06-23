@@ -52,12 +52,17 @@ Using the [Hive](https://pub.dev/packages/hive) package, a lightweight database,
 ### Setup and Installation
 
 1. **Clone the repository**:
+   
    ```sh
    git clone https://github.com/your-username/kanban-board.git
    cd kanban-board
-2. **Install dependencies**:
+   
+3. **Install dependencies**:
+   
    ```sh
    flutter pub get
-3. **Run the app**:
-  ```sh
-  flutter run   
+   
+5. **Run the app**:
+   
+   ```sh
+   flutter run
