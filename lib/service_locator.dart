@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
-import 'package:kanban_board/application/features/tasks/tasks_cubit.dart';
+import 'package:kanban_board/application/features/main/tasks_cubit.dart';
 import 'package:kanban_board/domain/task_repository.dart';
 import 'package:kanban_board/infrastructure/datasource/remote_tasks_data_source_impl.dart';
 import 'package:kanban_board/infrastructure/datasource/tasks_datasource.dart';

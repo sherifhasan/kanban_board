@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kanban_board/application/features/tasks/tasks_cubit.dart';
+import 'package:kanban_board/application/features/main/tasks_cubit.dart';
 import 'package:kanban_board/domain/models/task.dart';
 import 'package:flutter_boardview/boardview.dart';
 import 'package:flutter_boardview/boardview_controller.dart';
