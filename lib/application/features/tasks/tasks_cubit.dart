@@ -26,10 +26,8 @@ class TasksCubit extends Cubit<TaskState> {
     }
   }
 
-//
   Future<void> addTask(String content) async {
     try {
-      emit(const TaskState.loading());
       final taskDto = await taskRepository.addTask(content);
       final task = taskDto.toDomain();
       final currentState = state;
@@ -41,14 +39,14 @@ class TasksCubit extends Cubit<TaskState> {
     }
   }
 
-//
-  Future<void> updateTask(Task updatedTask) async {
+  Future<void> updateTask(Task task) async {
     try {
-      emit(const TaskState.loading());
+      final taskDto = await taskRepository.updateTask(task.id, task.content);
+      final updatedTask = taskDto.toDomain();
       final currentState = state;
       if (currentState is _Loaded) {
         final updatedTasks = currentState.tasks.map((task) {
-          return task.id == updatedTask.id ? updatedTask : task;
+          return task.id == task.id ? updatedTask : task;
         }).toList();
         emit(TaskState.loaded(updatedTasks));
       }
@@ -57,10 +55,37 @@ class TasksCubit extends Cubit<TaskState> {
     }
   }
 
-//
+  Future<void> deleteTask(String taskId) async {
+    try {
+      await taskRepository.deleteTask(taskId);
+      final currentState = state;
+      if (currentState is _Loaded) {
+        final updatedTasks =
+            currentState.tasks.where((task) => task.id != taskId).toList();
+        emit(TaskState.loaded(updatedTasks));
+      }
+    } catch (e) {
+      emit(TaskState.error(e.toString()));
+    }
+  }
+
+  Future<void> moveTask(Task task, TaskStatus newStatus) async {
+    try {
+      final updatedTask = task.copyWith(status: newStatus);
+      final currentState = state;
+      if (currentState is _Loaded) {
+        final updatedTasks = currentState.tasks.map((t) {
+          return t.id == task.id ? updatedTask : t;
+        }).toList();
+        emit(TaskState.loaded(updatedTasks));
+      }
+    } catch (e) {
+      emit(TaskState.error(e.toString()));
+    }
+  }
+
   Future<void> closeTask(String taskId) async {
     try {
-      emit(const TaskState.loading());
       final success = await taskRepository.closeTask(taskId);
       if (success) {
         final currentState = state;
@@ -79,10 +104,8 @@ class TasksCubit extends Cubit<TaskState> {
     }
   }
 
-//
   Future<void> loadComments(String taskId) async {
     try {
-      emit(const TaskState.loading());
       final commentDtos = await taskRepository.getAllComments(taskId);
       final comments = commentDtos.map((dto) => dto.toDomain()).toList();
       final currentState = state;
@@ -100,10 +123,8 @@ class TasksCubit extends Cubit<TaskState> {
     }
   }
 
-//
   Future<void> addComment(String taskId, String content) async {
     try {
-      emit(const TaskState.loading());
       final commentDto = await taskRepository.addComment(taskId, content);
       final comment = commentDto.toDomain();
       final currentState = state;
@@ -121,7 +142,6 @@ class TasksCubit extends Cubit<TaskState> {
     }
   }
 
-//
   Future<void> startTimer(String taskId) async {
     final currentState = state;
     if (currentState is _Loaded) {
@@ -135,7 +155,6 @@ class TasksCubit extends Cubit<TaskState> {
     }
   }
 
-//
   Future<void> stopTimer(String taskId, int timeSpent) async {
     final currentState = state;
     if (currentState is _Loaded) {
