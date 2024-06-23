@@ -14,8 +14,8 @@ import 'infrastructure/models/local/local.dart';
 final injection = GetIt.instance;
 const apiToken = 'add your token';
 
-void setup() {
-  setupDatabase();
+Future<void> setup() async {
+  await setupDatabase();
   setupLocators();
 }
 
@@ -43,7 +43,8 @@ void setupLocators() {
       () => RemoteTasksDataSourceImpl(dio: injection<Dio>()));
 
   // Register HiveBox
-  injection.registerLazySingleton<Box>(() => Hive.box<DatabaseTask>('completedTasks'));
+  injection.registerLazySingleton<Box<DatabaseTask>>(
+      () => Hive.box<DatabaseTask>('completedTasks'));
 
   // Register TaskRepository
   injection.registerLazySingleton<TaskRepository>(() => TaskRepositoryImpl(
