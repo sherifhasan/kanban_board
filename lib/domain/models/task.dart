@@ -7,11 +7,13 @@ enum TaskStatus { toDo, inProgress, done }
 @freezed
 class Task with _$Task {
   const factory Task({
-    required String content,
     required String id,
+    required String content,
     required DateTime createdAt,
     @Default([]) List<Comment> comments,
     @Default(TaskStatus.toDo) TaskStatus status,
+    @Default(0) int timeSpent, // Time spent in seconds
+    @Default(false) bool isTiming, // Timer status
   }) = _Task;
 }
 

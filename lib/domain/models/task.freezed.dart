@@ -16,11 +16,14 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$Task {
-  String get content => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
+  String get content => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   List<Comment> get comments => throw _privateConstructorUsedError;
   TaskStatus get status => throw _privateConstructorUsedError;
+  int get timeSpent =>
+      throw _privateConstructorUsedError; // Time spent in seconds
+  bool get isTiming => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TaskCopyWith<Task> get copyWith => throw _privateConstructorUsedError;
@@ -32,11 +35,13 @@ abstract class $TaskCopyWith<$Res> {
       _$TaskCopyWithImpl<$Res, Task>;
   @useResult
   $Res call(
-      {String content,
-      String id,
+      {String id,
+      String content,
       DateTime createdAt,
       List<Comment> comments,
-      TaskStatus status});
+      TaskStatus status,
+      int timeSpent,
+      bool isTiming});
 }
 
 /// @nodoc
@@ -52,20 +57,22 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? content = null,
     Object? id = null,
+    Object? content = null,
     Object? createdAt = null,
     Object? comments = null,
     Object? status = null,
+    Object? timeSpent = null,
+    Object? isTiming = null,
   }) {
     return _then(_value.copyWith(
-      content: null == content
-          ? _value.content
-          : content // ignore: cast_nullable_to_non_nullable
-              as String,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      content: null == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
               as String,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -79,6 +86,14 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as TaskStatus,
+      timeSpent: null == timeSpent
+          ? _value.timeSpent
+          : timeSpent // ignore: cast_nullable_to_non_nullable
+              as int,
+      isTiming: null == isTiming
+          ? _value.isTiming
+          : isTiming // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -91,11 +106,13 @@ abstract class _$$TaskImplCopyWith<$Res> implements $TaskCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String content,
-      String id,
+      {String id,
+      String content,
       DateTime createdAt,
       List<Comment> comments,
-      TaskStatus status});
+      TaskStatus status,
+      int timeSpent,
+      bool isTiming});
 }
 
 /// @nodoc
@@ -108,20 +125,22 @@ class __$$TaskImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? content = null,
     Object? id = null,
+    Object? content = null,
     Object? createdAt = null,
     Object? comments = null,
     Object? status = null,
+    Object? timeSpent = null,
+    Object? isTiming = null,
   }) {
     return _then(_$TaskImpl(
-      content: null == content
-          ? _value.content
-          : content // ignore: cast_nullable_to_non_nullable
-              as String,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      content: null == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
               as String,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -135,6 +154,14 @@ class __$$TaskImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as TaskStatus,
+      timeSpent: null == timeSpent
+          ? _value.timeSpent
+          : timeSpent // ignore: cast_nullable_to_non_nullable
+              as int,
+      isTiming: null == isTiming
+          ? _value.isTiming
+          : isTiming // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -143,17 +170,19 @@ class __$$TaskImplCopyWithImpl<$Res>
 
 class _$TaskImpl implements _Task {
   const _$TaskImpl(
-      {required this.content,
-      required this.id,
+      {required this.id,
+      required this.content,
       required this.createdAt,
       final List<Comment> comments = const [],
-      this.status = TaskStatus.toDo})
+      this.status = TaskStatus.toDo,
+      this.timeSpent = 0,
+      this.isTiming = false})
       : _comments = comments;
 
   @override
-  final String content;
-  @override
   final String id;
+  @override
+  final String content;
   @override
   final DateTime createdAt;
   final List<Comment> _comments;
@@ -168,10 +197,17 @@ class _$TaskImpl implements _Task {
   @override
   @JsonKey()
   final TaskStatus status;
+  @override
+  @JsonKey()
+  final int timeSpent;
+// Time spent in seconds
+  @override
+  @JsonKey()
+  final bool isTiming;
 
   @override
   String toString() {
-    return 'Task(content: $content, id: $id, createdAt: $createdAt, comments: $comments, status: $status)';
+    return 'Task(id: $id, content: $content, createdAt: $createdAt, comments: $comments, status: $status, timeSpent: $timeSpent, isTiming: $isTiming)';
   }
 
   @override
@@ -179,17 +215,28 @@ class _$TaskImpl implements _Task {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TaskImpl &&
-            (identical(other.content, content) || other.content == content) &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.content, content) || other.content == content) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             const DeepCollectionEquality().equals(other._comments, _comments) &&
-            (identical(other.status, status) || other.status == status));
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.timeSpent, timeSpent) ||
+                other.timeSpent == timeSpent) &&
+            (identical(other.isTiming, isTiming) ||
+                other.isTiming == isTiming));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, content, id, createdAt,
-      const DeepCollectionEquality().hash(_comments), status);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      content,
+      createdAt,
+      const DeepCollectionEquality().hash(_comments),
+      status,
+      timeSpent,
+      isTiming);
 
   @JsonKey(ignore: true)
   @override
@@ -200,22 +247,28 @@ class _$TaskImpl implements _Task {
 
 abstract class _Task implements Task {
   const factory _Task(
-      {required final String content,
-      required final String id,
+      {required final String id,
+      required final String content,
       required final DateTime createdAt,
       final List<Comment> comments,
-      final TaskStatus status}) = _$TaskImpl;
+      final TaskStatus status,
+      final int timeSpent,
+      final bool isTiming}) = _$TaskImpl;
 
   @override
-  String get content;
-  @override
   String get id;
+  @override
+  String get content;
   @override
   DateTime get createdAt;
   @override
   List<Comment> get comments;
   @override
   TaskStatus get status;
+  @override
+  int get timeSpent;
+  @override // Time spent in seconds
+  bool get isTiming;
   @override
   @JsonKey(ignore: true)
   _$$TaskImplCopyWith<_$TaskImpl> get copyWith =>
