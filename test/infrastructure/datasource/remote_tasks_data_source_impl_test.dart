@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kanban_board/infrastructure/datasource/remote_tasks_data_source_impl.dart';
 import 'package:kanban_board/infrastructure/datasource/tasks_datasource.dart';
-import 'package:kanban_board/infrastructure/models/task_dto.dart';
-import 'package:kanban_board/infrastructure/models/comment_dto.dart';
+import 'package:kanban_board/infrastructure/models/remote/remote.dart';
+
 import 'package:mocktail/mocktail.dart';
 import 'package:dio/dio.dart';
 

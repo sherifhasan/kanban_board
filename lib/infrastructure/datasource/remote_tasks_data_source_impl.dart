@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:kanban_board/infrastructure/datasource/tasks_datasource.dart';
-import 'package:kanban_board/infrastructure/models/task_dto.dart';
-import 'package:kanban_board/infrastructure/models/comment_dto.dart';
+
+import '../models/remote/remote.dart';
 
 class RemoteTasksDataSourceImpl extends TasksDataSource {
   final Dio dio;
@@ -31,15 +31,13 @@ class RemoteTasksDataSourceImpl extends TasksDataSource {
   @override
   Future<List<TaskDto>> getAllTasks() async {
     try {
-      final response = await dio.get(
-        '/tasks',
-      );
+      final response = await dio.get('/tasks');
 
       if (response.statusCode == 200) {
         List<dynamic> data = response.data;
         return data.map((json) => TaskDto.fromJson(json)).toList();
       } else {
-        throw Exception('Failed to fetch all tasks :${response.statusCode}');
+        throw Exception('Failed to fetch all tasks: ${response.statusCode}');
       }
     } on DioException catch (e) {
       throw Exception('Failed to fetch all tasks: $e');
@@ -79,7 +77,7 @@ class RemoteTasksDataSourceImpl extends TasksDataSource {
         List<dynamic> data = response.data;
         return data.map((json) => CommentDto.fromJson(json)).toList();
       } else {
-        throw Exception('Failed to fetch comments :${response.statusCode}');
+        throw Exception('Failed to fetch comments: ${response.statusCode}');
       }
     } on DioException catch (e) {
       throw Exception('Failed to fetch comments: $e');
@@ -133,6 +131,21 @@ class RemoteTasksDataSourceImpl extends TasksDataSource {
       }
     } on DioException catch (e) {
       throw Exception('Failed to delete task: $e');
+    }
+  }
+
+  @override
+  Future<TaskDto> getTask(String taskId) async {
+    try {
+      final response = await dio.get('/tasks/$taskId');
+
+      if (response.statusCode == 200) {
+        return TaskDto.fromJson(response.data);
+      } else {
+        throw Exception('Failed to fetch task: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw Exception('Failed to fetch task: $e');
     }
   }
 }
