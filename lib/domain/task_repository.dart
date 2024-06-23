@@ -1,5 +1,8 @@
-import 'package:kanban_board/infrastructure/models/comment_dto.dart';
-import 'package:kanban_board/infrastructure/models/task_dto.dart';
+import 'package:kanban_board/infrastructure/models/local/database_task.dart';
+import 'package:kanban_board/infrastructure/models/remote/comment_dto.dart';
+import 'package:kanban_board/infrastructure/models/remote/task_dto.dart';
+
+import 'models/task.dart';
 
 abstract class TaskRepository {
   Future<TaskDto> addTask(String content);
@@ -15,4 +18,6 @@ abstract class TaskRepository {
   Future<TaskDto> updateTask(String taskId, String content);
 
   Future<void> deleteTask(String taskId);
+
+  List<DatabaseTask> getCompletedTasks();
 }

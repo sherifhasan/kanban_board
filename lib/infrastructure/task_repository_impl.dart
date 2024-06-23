@@ -1,26 +1,46 @@
+import 'package:hive/hive.dart';
 import 'package:kanban_board/domain/task_repository.dart';
 import 'package:kanban_board/infrastructure/datasource/tasks_datasource.dart';
-import 'package:kanban_board/infrastructure/models/comment_dto.dart';
-import 'package:kanban_board/infrastructure/models/task_dto.dart';
+import 'package:kanban_board/infrastructure/models/local/database_task.dart';
+
+import 'models/remote/remote.dart';
 
 class TaskRepositoryImpl extends TaskRepository {
   final TasksDataSource remoteTasksDataSource;
+  final Box<DatabaseTask> completedTasksBox;
 
-  TaskRepositoryImpl({required this.remoteTasksDataSource});
+  TaskRepositoryImpl(
+      {required this.remoteTasksDataSource, required this.completedTasksBox});
 
   @override
-  Future<TaskDto> addTask(String content) {
-    return remoteTasksDataSource.addTask(content);
+  Future<List<TaskDto>> getAllTasks() async {
+    return await remoteTasksDataSource.getAllTasks();
   }
 
   @override
-  Future<CommentDto> addComment(String taskId, String content) {
-    return remoteTasksDataSource.addComment(taskId, content);
+  Future<TaskDto> addTask(String content) async {
+    return await remoteTasksDataSource.addTask(content);
   }
 
   @override
-  Future<bool> closeTask(String taskId) {
-    return remoteTasksDataSource.closeTask(taskId);
+  Future<TaskDto> updateTask(String taskId, String content) async {
+    return await remoteTasksDataSource.updateTask(taskId, content);
+  }
+
+  @override
+  Future<void> deleteTask(String taskId) async {
+    await remoteTasksDataSource.deleteTask(taskId);
+  }
+
+  @override
+  Future<bool> closeTask(String taskId) async {
+    bool success = await remoteTasksDataSource.closeTask(taskId);
+    if (success) {
+      final taskDto = await remoteTasksDataSource.getTask(taskId);
+      final task = taskDto.toDomain();
+      await completedTasksBox.put(task.id, DatabaseTask.fromTask(task));
+    }
+    return success;
   }
 
   @override
@@ -29,17 +49,12 @@ class TaskRepositoryImpl extends TaskRepository {
   }
 
   @override
-  Future<List<TaskDto>> getAllTasks() {
-    return remoteTasksDataSource.getAllTasks();
+  Future<CommentDto> addComment(String taskId, String content) {
+    return remoteTasksDataSource.addComment(taskId, content);
   }
 
   @override
-  Future<TaskDto> updateTask(String taskId, String content) {
-    return remoteTasksDataSource.updateTask(taskId, content);
-  }
-
-  @override
-  Future<void> deleteTask(String taskId) {
-    return remoteTasksDataSource.deleteTask(taskId);
+  List<DatabaseTask> getCompletedTasks() {
+    return completedTasksBox.values.toList();
   }
 }

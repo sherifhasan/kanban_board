@@ -1,5 +1,5 @@
-import 'package:kanban_board/infrastructure/models/comment_dto.dart';
-import 'package:kanban_board/infrastructure/models/task_dto.dart';
+import 'package:kanban_board/infrastructure/models/remote/comment_dto.dart';
+import 'package:kanban_board/infrastructure/models/remote/task_dto.dart';
 
 abstract class TasksDataSource {
   Future<TaskDto> addTask(String content);
@@ -15,4 +15,6 @@ abstract class TasksDataSource {
   Future<TaskDto> updateTask(String content, String taskId);
 
   Future<void> deleteTask(String taskId);
+
+  Future<TaskDto> getTask(String taskId);
 }

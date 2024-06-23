@@ -14,8 +14,7 @@ class CompletedTasksScreen extends StatelessWidget {
       body: BlocBuilder<CompletedTasksCubit, CompletedTasksState>(
         builder: (context, state) {
           return state.when(
-            initial: () =>
-                const Center(child: Text('No completed tasks')),
+            initial: () => const Center(child: Text('No completed tasks')),
             loading: () => const Center(child: CircularProgressIndicator()),
             loaded: (tasks) => ListView.builder(
               itemCount: tasks.length,
@@ -23,7 +22,8 @@ class CompletedTasksScreen extends StatelessWidget {
                 final task = tasks[index];
                 return ListTile(
                   title: Text(task.content),
-                  subtitle: Text('Completed at: ${task.createdAt}'),
+                  subtitle: Text(
+                      'Completed at: ${task.timeSpent.toStringAsFixed(2)} min'),
                 );
               },
             ),

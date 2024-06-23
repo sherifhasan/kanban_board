@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:kanban_board/domain/models/task.dart';
 import 'package:kanban_board/domain/task_repository.dart';
-import 'package:kanban_board/infrastructure/models/task_dto.dart';
 
 part 'completed_tasks_state.dart';
 
@@ -17,11 +16,9 @@ class CompletedTasksCubit extends Cubit<CompletedTasksState> {
   Future<void> loadCompletedTasks() async {
     try {
       emit(const CompletedTasksState.loading());
-      final taskDtos = await taskRepository.getAllTasks();
-      final tasks = taskDtos
-          .where((taskDto) => taskDto.isCompleted)
-          .map((taskDto) => taskDto.toDomain())
-          .toList();
+      final databaseTasks = taskRepository.getCompletedTasks();
+      final tasks =
+          databaseTasks.map((databaseTask) => databaseTask.toTask()).toList();
       if (tasks.isNotEmpty) {
         emit(CompletedTasksState.loaded(tasks));
       } else {
