@@ -15,7 +15,7 @@ class TasksCubit extends Cubit<TaskState> {
 
   TasksCubit({required this.taskRepository}) : super(const TaskState.initial());
 
-  Future<void> loadTasks(String filter) async {
+  Future<void> loadTasks() async {
     try {
       emit(const TaskState.loading());
       final taskDtos = await taskRepository.getAllTasks();

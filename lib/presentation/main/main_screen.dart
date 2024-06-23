@@ -18,14 +18,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final BoardViewController _boardViewController = BoardViewController();
 
-  @override
-  void initState() {
-    super.initState();
-    context.read<TasksCubit>().loadTasks('');
-  }
-
   void _handleDropList(int? listIndex, int? oldListIndex) {
-    // Implement logic if needed
   }
 
   void _handleDropItem(

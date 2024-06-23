@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => injection<TasksCubit>()..loadTasks(''),
+          create: (_) => injection<TasksCubit>()..loadTasks(),
         ),
         BlocProvider(
           create: (_) => injection<CompletedTasksCubit>()..loadCompletedTasks(),
