@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kanban_board/application/features/history/completed_tasks_cubit.dart';
 import 'package:kanban_board/application/features/main/tasks_cubit.dart';
 import 'package:kanban_board/presentation/main/main_screen.dart';
 import 'package:kanban_board/service_locator.dart';
@@ -23,6 +24,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => sl<TasksCubit>()..loadTasks(''),
+        ),
+        BlocProvider(
+          create: (_) => sl<CompletedTasksCubit>()..loadCompletedTasks(),
         ),
       ],
       child: MaterialApp(

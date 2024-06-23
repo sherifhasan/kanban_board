@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
+import 'package:kanban_board/application/features/history/completed_tasks_cubit.dart';
 import 'package:kanban_board/application/features/main/tasks_cubit.dart';
 import 'package:kanban_board/domain/task_repository.dart';
 import 'package:kanban_board/infrastructure/datasource/remote_tasks_data_source_impl.dart';
@@ -30,4 +31,8 @@ void setup() {
   // Register TasksCubit
   sl.registerFactory<TasksCubit>(
       () => TasksCubit(taskRepository: sl<TaskRepository>()));
+
+  // Register CompletedTasksCubit
+  sl.registerFactory<CompletedTasksCubit>(
+      () => CompletedTasksCubit(taskRepository: sl<TaskRepository>()));
 }
