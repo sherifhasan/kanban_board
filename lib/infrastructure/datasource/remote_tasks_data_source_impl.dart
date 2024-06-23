@@ -103,4 +103,37 @@ class RemoteTasksDataSourceImpl extends TasksDataSource {
       throw Exception('Failed to close task: $e');
     }
   }
+
+  @override
+  Future<TaskDto> updateTask(String taskId, String content) async {
+    try {
+      final response = await dio.post(
+        '/tasks/$taskId',
+        data: jsonEncode({
+          'content': content,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        return TaskDto.fromJson(response.data);
+      } else {
+        throw Exception('Failed to update task: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw Exception('Failed to update task: $e');
+    }
+  }
+
+  @override
+  Future<void> deleteTask(String taskId) async {
+    try {
+      final response = await dio.delete('/tasks/$taskId');
+
+      if (response.statusCode != 204) {
+        throw Exception('Failed to delete task: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw Exception('Failed to delete task: $e');
+    }
+  }
 }

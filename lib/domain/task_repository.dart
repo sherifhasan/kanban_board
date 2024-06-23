@@ -11,4 +11,8 @@ abstract class TaskRepository {
   Future<List<CommentDto>> getAllComments(String taskId);
 
   Future<bool> closeTask(String taskId);
+
+  Future<TaskDto> updateTask(String taskId, String content);
+
+  Future<void> deleteTask(String taskId);
 }

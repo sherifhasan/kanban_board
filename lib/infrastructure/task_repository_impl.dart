@@ -32,4 +32,14 @@ class TaskRepositoryImpl extends TaskRepository {
   Future<List<TaskDto>> getAllTasks(String filter) {
     return remoteTasksDataSource.getAllTasks(filter);
   }
+
+  @override
+  Future<TaskDto> updateTask(String taskId, String content) {
+    return remoteTasksDataSource.updateTask(taskId, content);
+  }
+
+  @override
+  Future<void> deleteTask(String taskId) {
+    return remoteTasksDataSource.deleteTask(taskId);
+  }
 }
