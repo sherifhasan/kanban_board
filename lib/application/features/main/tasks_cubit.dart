@@ -103,9 +103,9 @@ class TasksCubit extends Cubit<TaskState> {
     }
   }
 
-  Future<void> addComment(String taskId, String content) async {
+  Future<void> addComment(String content, String taskId) async {
     try {
-      final commentDto = await taskRepository.addComment(taskId, content);
+      final commentDto = await taskRepository.addComment(content, taskId);
       final comment = commentDto.toDomain();
       final currentState = state;
       if (currentState is _Loaded) {

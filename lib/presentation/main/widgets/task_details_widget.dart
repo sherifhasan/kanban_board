@@ -85,7 +85,7 @@ class TaskDetailsWidgetState extends State<TaskDetailsWidget> {
                       if (content.isNotEmpty) {
                         context
                             .read<TasksCubit>()
-                            .addComment(updatedTask.id, content);
+                            .addComment(content, updatedTask.id);
                         _commentController.clear();
                       }
                     },

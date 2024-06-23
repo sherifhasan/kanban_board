@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Kanban Board',
         theme: ThemeData(
           primarySwatch: Colors.blue,

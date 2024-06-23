@@ -7,7 +7,7 @@ abstract class TaskRepository {
 
   Future<List<TaskDto>> getAllTasks();
 
-  Future<CommentDto> addComment(String taskId, String content);
+  Future<CommentDto> addComment(String content, String taskId);
 
   Future<List<CommentDto>> getAllComments(String taskId);
 

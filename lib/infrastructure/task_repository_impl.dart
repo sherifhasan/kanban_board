@@ -50,8 +50,8 @@ class TaskRepositoryImpl extends TaskRepository {
   }
 
   @override
-  Future<CommentDto> addComment(String taskId, String content) {
-    return remoteTasksDataSource.addComment(taskId, content);
+  Future<CommentDto> addComment(String content, String taskId) {
+    return remoteTasksDataSource.addComment(content, taskId);
   }
 
   @override
