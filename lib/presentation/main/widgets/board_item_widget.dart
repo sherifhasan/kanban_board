@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boardview/board_item.dart';
 import 'package:kanban_board/domain/models/task.dart';
 import 'package:kanban_board/presentation/main/widgets/task_details_widget.dart';
-
-import 'dialogs.dart';
+import 'task_item_widget.dart';
 
 BoardItem buildBoardItem({
   required Task task,
@@ -49,19 +48,6 @@ BoardItem buildBoardItem({
         },
       );
     },
-    item: Container(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          Expanded(child: Text(task.content)),
-          IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () {
-              showDeleteTaskDialog(context, task.id);
-            },
-          ),
-        ],
-      ),
-    ),
+    item: TaskItemWidget(task: task, context: context),
   );
 }

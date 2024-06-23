@@ -25,8 +25,6 @@ BoardList buildBoardList({
         child: Row(
           children: [
             Text(name, style: const TextStyle(fontWeight: FontWeight.w800)),
-            const SizedBox(width: 8),
-            Text('${tasks.length}', style: const TextStyle(fontWeight: FontWeight.w800)),
           ],
         ),
       ),
