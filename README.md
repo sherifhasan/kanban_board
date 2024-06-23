@@ -1,8 +1,7 @@
 # Kanban board <img src="https://img.shields.io/badge/made%20with-dart-blue.svg" alt="made with dart">
 
 
-This app assists users in creating and manging their tasks. It follows the Domain-Driven Design (DDD) architecture for a clear separation of concerns, utilizes GetIt for dependency injection, and employs the BLoC (Business Logic Component) pattern for state management. Flutter Hooks is used for stateful logic within functional widgets.
-
+This app assists users in creating and manging their tasks. It follows the Domain-Driven Design (DDD) architecture for a clear separation of concerns, utilizes GetIt for dependency injection, and employs the BLoC (Business Logic Component) pattern for state management.
 ### Architecture
 
 1. Domain driven design helps separate domain logic from framework-specific code,
