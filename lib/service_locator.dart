@@ -11,7 +11,7 @@ import 'package:kanban_board/infrastructure/task_repository_impl.dart';
 
 import 'infrastructure/models/local/local.dart';
 
-final sl = GetIt.instance;
+final injection = GetIt.instance;
 const apiToken = 'add your token';
 
 void setup() {
@@ -30,7 +30,7 @@ Future<void> setupDatabase() async {
 
 void setupLocators() {
   // Register Dio
-  sl.registerLazySingleton<Dio>(() => Dio(BaseOptions(
+  injection.registerLazySingleton<Dio>(() => Dio(BaseOptions(
         baseUrl: 'https://api.todoist.com/rest/v2',
         headers: {
           'Content-Type': 'application/json',
@@ -39,22 +39,22 @@ void setupLocators() {
       )));
 
   // Register TasksDataSource
-  sl.registerLazySingleton<TasksDataSource>(
-      () => RemoteTasksDataSourceImpl(dio: sl<Dio>()));
+  injection.registerLazySingleton<TasksDataSource>(
+      () => RemoteTasksDataSourceImpl(dio: injection<Dio>()));
 
   // Register HiveBox
-  sl.registerLazySingleton<Box>(() => Hive.box<DatabaseTask>('completedTasks'));
+  injection.registerLazySingleton<Box>(() => Hive.box<DatabaseTask>('completedTasks'));
 
   // Register TaskRepository
-  sl.registerLazySingleton<TaskRepository>(() => TaskRepositoryImpl(
-      remoteTasksDataSource: sl<TasksDataSource>(),
-      completedTasksBox: sl<Box<DatabaseTask>>()));
+  injection.registerLazySingleton<TaskRepository>(() => TaskRepositoryImpl(
+      remoteTasksDataSource: injection<TasksDataSource>(),
+      completedTasksBox: injection<Box<DatabaseTask>>()));
 
   // Register TasksCubit
-  sl.registerFactory<TasksCubit>(
-      () => TasksCubit(taskRepository: sl<TaskRepository>()));
+  injection.registerFactory<TasksCubit>(
+      () => TasksCubit(taskRepository: injection<TaskRepository>()));
 
   // Register CompletedTasksCubit
-  sl.registerFactory<CompletedTasksCubit>(
-      () => CompletedTasksCubit(taskRepository: sl<TaskRepository>()));
+  injection.registerFactory<CompletedTasksCubit>(
+      () => CompletedTasksCubit(taskRepository: injection<TaskRepository>()));
 }
