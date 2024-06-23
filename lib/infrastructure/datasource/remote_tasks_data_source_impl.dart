@@ -29,11 +29,10 @@ class RemoteTasksDataSourceImpl extends TasksDataSource {
   }
 
   @override
-  Future<List<TaskDto>> getAllTasks(String filter) async {
+  Future<List<TaskDto>> getAllTasks() async {
     try {
       final response = await dio.get(
         '/tasks',
-        queryParameters: {'filter': filter},
       );
 
       if (response.statusCode == 200) {

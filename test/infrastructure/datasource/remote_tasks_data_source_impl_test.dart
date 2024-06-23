@@ -117,8 +117,7 @@ void main() {
               requestOptions: RequestOptions(path: ''),
             ));
 
-        final tasks =
-            await remoteTaskDataSource.getAllTasks('is_completed=true');
+        final tasks = await remoteTaskDataSource.getAllTasks();
 
         expect(tasks, isA<List<TaskDto>>());
         expect(tasks.length, 1);
@@ -139,9 +138,7 @@ void main() {
               requestOptions: RequestOptions(path: ''),
             ));
 
-        expect(
-            () async =>
-                await remoteTaskDataSource.getAllTasks('is_completed=true'),
+        expect(() async => await remoteTaskDataSource.getAllTasks(),
             throwsException);
       });
     });

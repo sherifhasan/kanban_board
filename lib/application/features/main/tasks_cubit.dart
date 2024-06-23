@@ -18,7 +18,7 @@ class TasksCubit extends Cubit<TaskState> {
   Future<void> loadTasks(String filter) async {
     try {
       emit(const TaskState.loading());
-      final taskDtos = await taskRepository.getAllTasks(filter);
+      final taskDtos = await taskRepository.getAllTasks();
       final tasks = taskDtos.map((dto) => dto.toDomain()).toList();
       emit(TaskState.loaded(tasks));
     } catch (e) {

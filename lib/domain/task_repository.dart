@@ -4,7 +4,7 @@ import 'package:kanban_board/infrastructure/models/task_dto.dart';
 abstract class TaskRepository {
   Future<TaskDto> addTask(String content);
 
-  Future<List<TaskDto>> getAllTasks(String filter);
+  Future<List<TaskDto>> getAllTasks();
 
   Future<CommentDto> addComment(String taskId, String content);
 
