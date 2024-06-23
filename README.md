@@ -59,5 +59,5 @@ Using the [Hive](https://pub.dev/packages/hive) package, a lightweight database,
    ```sh
    flutter pub get
 3. **Run the app**:
-```sh
-flutter run   
+  ```sh
+  flutter run   
