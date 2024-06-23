@@ -4,6 +4,7 @@ import 'package:kanban_board/application/features/main/tasks_cubit.dart';
 import 'package:kanban_board/domain/models/task.dart';
 import 'package:flutter_boardview/boardview.dart';
 import 'package:flutter_boardview/boardview_controller.dart';
+import 'package:kanban_board/presentation/history/completed_tasks_screen.dart';
 import 'package:kanban_board/presentation/main/widgets/board_list_widget.dart';
 import 'package:kanban_board/presentation/main/widgets/dialogs.dart';
 
@@ -58,6 +59,16 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Kanban Board'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.history),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const CompletedTasksScreen(),
+              ));
+            },
+          ),
+        ],
       ),
       body: BlocBuilder<TasksCubit, TaskState>(
         builder: (context, state) {
