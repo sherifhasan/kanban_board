@@ -10,6 +10,19 @@ This app assists users in creating and managing their tasks. It follows the Doma
 3. **History of Completed Tasks**: A history of completed tasks, including the time spent on each task and the date it was completed.
 4. **Comments**: Users can comment on each task.
 
+### APIs Used
+This app uses the Todoist API for managing tasks. You will need to create your own token and place it in the `serviceLocator` file in the project.
+
+1. **Add Task**: `addTask`
+2. **Get All Tasks**: `getAllTasks`
+3. **Add Comment**: `addComment`
+4. **Get All Comments**: `getAllComments`
+5. **Close Task**: `closeTask`
+6. **Update Task**: `updateTask`
+7. **Delete Task**: `deleteTask`
+
+For more information, refer to the [Todoist API documentation](https://developer.todoist.com/rest/v2/#overview).
+
 ### Architecture
 
 1. **Domain-Driven Design (DDD)**:
@@ -38,7 +51,10 @@ Using the [Hive](https://pub.dev/packages/hive) package, a lightweight database,
 
 ### Setup and Installation
 
-**Clone the repository**:
+1. **Clone the repository**:
    ```sh
    git clone https://github.com/your-username/kanban-board.git
    cd kanban-board
+2. **Install dependencies**:
+ ```sh
+   flutter pub get
