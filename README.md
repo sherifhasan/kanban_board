@@ -2,6 +2,13 @@
 
 
 This app assists users in creating and manging their tasks. It follows the Domain-Driven Design (DDD) architecture for a clear separation of concerns, utilizes GetIt for dependency injection, and employs the BLoC (Business Logic Component) pattern for state management.
+
+### Features
+1. Kanban Board: A kanban board for tasks, where users can create, edit, and move tasks between different columns (e.g. "To Do", "In Progress", "Done").
+2. Timer Function: A timer function that allows users to start and stop tracking the time spent on each task.
+3. History of Completed Tasks: A history of completed tasks, including the time spent on each task and the date it was completed.
+4. Comments: Users can comment on each task.
+
 ### Architecture
 
 1. Domain driven design helps separate domain logic from framework-specific code,
