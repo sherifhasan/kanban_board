@@ -56,5 +56,9 @@ Using the [Hive](https://pub.dev/packages/hive) package, a lightweight database,
    git clone https://github.com/your-username/kanban-board.git
    cd kanban-board
 2. **Install dependencies**:
- ```sh
+   ```sh
    flutter pub get
+3. **Run the app**:
+```sh
+Copy code
+flutter run   
