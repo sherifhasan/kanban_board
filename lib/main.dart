@@ -7,6 +7,7 @@ import 'package:kanban_board/presentation/main/main_screen.dart';
 import 'package:kanban_board/service_locator.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   setup();
   runApp(const MyApp());
 }
