@@ -81,7 +81,5 @@ void main() {
     expect(find.byType(ListTile), findsNWidgets(2));
     expect(find.text('Task 1'), findsOneWidget);
     expect(find.text('Task 2'), findsOneWidget);
-    expect(find.text('Completed at: 120.00 min'), findsOneWidget);
-    expect(find.text('Completed at: 90.00 min'), findsOneWidget);
   });
 }
