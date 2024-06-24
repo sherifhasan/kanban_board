@@ -65,7 +65,7 @@ Using [Firebase Analytics](https://pub.dev/packages/firebase_analytics), the app
    
    ```sh
    flutter pub get
-3. setup firebase**:
+3. **Setup firebase**:
    
    ```sh
    https://firebase.google.com/docs/cli#install-cli-mac-linux  
