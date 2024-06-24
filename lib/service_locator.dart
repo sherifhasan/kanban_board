@@ -1,3 +1,5 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
@@ -9,12 +11,16 @@ import 'package:kanban_board/infrastructure/datasource/remote_tasks_data_source_
 import 'package:kanban_board/infrastructure/datasource/tasks_datasource.dart';
 import 'package:kanban_board/infrastructure/task_repository_impl.dart';
 
+import 'firebase_options.dart';
 import 'infrastructure/models/local/local.dart';
 
 final injection = GetIt.instance;
 const apiToken = 'add your token here';
 
 Future<void> setup() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await setupDatabase();
   setupLocators();
 }
@@ -52,9 +58,14 @@ void setupLocators() {
       remoteTasksDataSource: injection<TasksDataSource>(),
       completedTasksBox: injection<Box<DatabaseTask>>()));
 
+  // Register Firebase analytics
+  injection.registerLazySingleton<FirebaseAnalytics>(
+      () => FirebaseAnalytics.instance);
+
   // Register TasksCubit
-  injection.registerFactory<TasksCubit>(
-      () => TasksCubit(taskRepository: injection<TaskRepository>()));
+  injection.registerFactory<TasksCubit>(() => TasksCubit(
+      taskRepository: injection<TaskRepository>(),
+      analytics: injection<FirebaseAnalytics>()));
 
   // Register CompletedTasksCubit
   injection.registerFactory<CompletedTasksCubit>(

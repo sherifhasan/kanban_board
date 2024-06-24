@@ -5,6 +5,7 @@ import 'package:kanban_board/domain/models/task.dart';
 import 'package:kanban_board/domain/task_repository.dart';
 import 'package:kanban_board/infrastructure/models/remote/task_dto.dart';
 import 'package:kanban_board/infrastructure/models/remote/comment_dto.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 part 'task_state.dart';
 
@@ -12,14 +13,18 @@ part 'tasks_cubit.freezed.dart';
 
 class TasksCubit extends Cubit<TaskState> {
   final TaskRepository taskRepository;
+  final FirebaseAnalytics analytics;
 
-  TasksCubit({required this.taskRepository}) : super(const TaskState.initial());
+  TasksCubit({required this.taskRepository, required this.analytics})
+      : super(const TaskState.initial());
 
   Future<void> loadTasks() async {
     try {
       emit(const TaskState.loading());
       final taskDtos = await taskRepository.getAllTasks();
       final tasks = taskDtos.map((dto) => dto.toDomain()).toList();
+      await analytics.logEvent(
+          name: 'tasks_loaded', parameters: {'task_count': tasks.length});
       emit(TaskState.loaded(tasks));
     } catch (e) {
       emit(TaskState.error(e.toString()));
@@ -32,6 +37,8 @@ class TasksCubit extends Cubit<TaskState> {
       final task = taskDto.toDomain();
       final currentState = state;
       if (currentState is _Loaded) {
+        await analytics.logEvent(
+            name: 'task_added', parameters: {'task_content': content});
         emit(TaskState.loaded([...currentState.tasks, task]));
       }
     } catch (e) {
@@ -62,6 +69,8 @@ class TasksCubit extends Cubit<TaskState> {
       if (currentState is _Loaded) {
         final updatedTasks =
             currentState.tasks.where((task) => task.id != taskId).toList();
+        await analytics
+            .logEvent(name: '$taskId ', parameters: {'task': 'Task deleted'});
         emit(TaskState.loaded(updatedTasks));
       }
     } catch (e) {
@@ -115,6 +124,9 @@ class TasksCubit extends Cubit<TaskState> {
           }
           return task;
         }).toList();
+        await analytics.logEvent(
+            name: 'comment_added',
+            parameters: {'comment_added': '$taskId comment added $content'});
         emit(TaskState.loaded(updatedTasks));
       }
     } catch (e) {
