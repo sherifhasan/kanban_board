@@ -40,19 +40,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyD3nnDR8lqObvwPw1yqoYXvDOpKdUD_tMc',
-    appId: '1:882165915022:android:cddf6ae3dff420477898df',
-    messagingSenderId: '882165915022',
-    projectId: 'kanban-board-9b289',
-    storageBucket: 'kanban-board-9b289.appspot.com',
+    apiKey: 'add your apiKey',
+    appId: 'add your appId',
+    messagingSenderId: 'add your messagingSenderId',
+    projectId: 'add your projectId',
+    storageBucket: 'add your storageBucket',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDelzLMyNDgjw700iBkh53SSXeg-F3ep6g',
-    appId: '1:882165915022:ios:c414a911276b48fd7898df',
-    messagingSenderId: '882165915022',
-    projectId: 'kanban-board-9b289',
-    storageBucket: 'kanban-board-9b289.appspot.com',
+    apiKey: 'add your apiKey',
+    appId: 'add your appId',
+    messagingSenderId: 'add your messagingSenderId',
+    projectId: 'add your projectId',
+    storageBucket: 'add your storageBucket',
     iosBundleId: 'com.challenge.kanbanBoard',
   );
 }
