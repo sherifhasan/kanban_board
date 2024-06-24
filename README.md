@@ -49,6 +49,10 @@ Using the [Freezed](https://pub.dev/packages/freezed) package with [JSON Seriali
 
 Using the [Hive](https://pub.dev/packages/hive) package, a lightweight database, offers simplicity for saving completed tasks in the local database.
 
+### Analytics
+
+Using [Firebase Analytics](https://pub.dev/packages/firebase_analytics), the app logs various user interactions for analytics purposes, helping understand user behavior and improve the app.
+
 ### Setup and Installation
 
 1. **Clone the repository**:
@@ -57,10 +61,14 @@ Using the [Hive](https://pub.dev/packages/hive) package, a lightweight database,
    git clone https://github.com/your-username/kanban-board.git
    cd kanban-board
    
-3. **Install dependencies**:
+2. **Install dependencies**:
    
    ```sh
    flutter pub get
+3. setup firebase**:
+   
+   ```sh
+   https://firebase.google.com/docs/cli#install-cli-mac-linux  
    
 5. **Run the app**:
    
